@@ -1,4 +1,7 @@
+
+// Met à jour le meilleur score affiché au chargement
 document.getElementById("best").textContent = "Meilleur score : " + (localStorage.getItem("bestScore") || 0);
+
 const target = document.getElementById("target");
 const scoreDisplay = document.getElementById("score");
 const timerDisplay = document.getElementById("timer");
@@ -26,16 +29,17 @@ const countdown = setInterval(() => {
   if (timeLeft <= 0) {
     clearInterval(countdown);
     target.style.display = "none";
-    alert("Temps écoulé ! Ton score : " + score);
+
+    // Vérifie si le score est un nouveau record
+    let best = localStorage.getItem("bestScore") || 0;
+    if (score > best) {
+      localStorage.setItem("bestScore", score);
+      best = score;
+      alert("Bravo ! Nouveau record : " + score + " points 🎉");
+    } else {
+      alert("Temps écoulé ! Ton score : " + score + "\nRecord actuel : " + best);
+    }
   }
-// Vérifie si le score est un nouveau record
-let best = localStorage.getItem("bestScore") || 0;
-if (score > best) {
-  localStorage.setItem("bestScore", score);
-  best = score;
-  alert("Bravo ! Nouveau record : " + score + " points 🎉");
-} else {
-  alert("Temps écoulé ! Ton score : " + score + "\nRecord actuel : " + best);
 }, 1000);
 
 moveTarget(); // On lance le jeu
